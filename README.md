@@ -8,20 +8,34 @@
 
 #Raw data processing:
 #1. Trim Illumina adapters and UMI adapters from raw reads
+
+#pwd
+/home/linda/Scratch/trimmap
+
+#cp reads in my directory for S1-S6
+cp /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/A006200178_153621_S1_L* ./
+
+
+#to look into script
+cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/uni_tools.sh
+#for i in A006200178_153621_S1 \
+#A006200178_153622_S2 \
+#A006200178_153623_S3 \
+#A006200178_153624_S4 \
+#A006200178_153625_S5 \
+#A006200178_153626_S6
+#do
+#umi_tools extract --bc-pattern=NNNNNNNNNNN --stdin=${i}_L002_R2_001.fastq.gz --read2-#in=${i}_L002_R1_001.fastq.gz --stdout=${i}_add_barcode_R1.fastq.gz --read2-stdout
+#umi_tools extract --bc-pattern=NNNNNNNNNNN --stdin=${i}_L002_R2_001.fastq.gz --read2-#in=${i}_L002_R3_001.fastq.gz --stdout=${i}_add_barcode_R3.fastq.gz --read2-stdout
+#done
+
+#command
+/RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/uni_tools.sh
+ 
+ #Result: extracted barcodes, reads are trimmed
+
+-----
 #2. Mapping trimmed reads
-
-#(base) linda@bast-work-1:/RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6$ cat uni_tools.sh
-for i in A006200178_153621_S1 \
-A006200178_153622_S2 \
-A006200178_153623_S3 \
-A006200178_153624_S4 \
-A006200178_153625_S5 \
-A006200178_153626_S6
-do
-umi_tools extract --bc-pattern=NNNNNNNNNNN --stdin=${i}_L002_R2_001.fastq.gz --read2-in=${i}_L002_R1_001.fastq.gz --stdout=${i}_add_barcode_R1.fastq.gz --read2-stdout
-umi_tools extract --bc-pattern=NNNNNNNNNNN --stdin=${i}_L002_R2_001.fastq.gz --read2-in=${i}_L002_R3_001.fastq.gz --stdout=${i}_add_barcode_R3.fastq.gz --read2-stdout
-done
-
 
 #umi_tools extract --bc-pattern=NNNNNNNNNNN --stdin=A006200178_153626_S6_L002_R2_001.fastq.gz -I A006200178_153626_S6_L002_R1_001.fastq.gz --read2-in=A006200178_153626_S6_L002_R3_001.fastq.gz --stdout=S6_L002_R1_001.fastq.gz --read2-out=S6_L002_R3_001.fastq.gz
 (base) linda@bast-work-1:/RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6$ cat clean.sh
