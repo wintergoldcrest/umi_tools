@@ -10,6 +10,10 @@
 #1. Trim Illumina adapters and UMI adapters from raw reads
 
 #pwd
+/home/linda/Scratch
+
+#new file in Scratch: mkdir trimmap
+#pwd
 /home/linda/Scratch/trimmap
 
 #cp reads in my directory for S1-S6
