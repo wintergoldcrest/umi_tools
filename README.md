@@ -68,6 +68,6 @@ cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB0
 /clean_linda.sh
 
 
-#3. Download the cleaned files: scp  linda@bast-work-1.zoologie.uni-koeln.de:/RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/clean_data/*.html ./
+#3. Download the cleaned files: scp  linda@bast-work-1.zoologie.uni-koeln.de:/home/linda/Scratch/trimmap/clean_data/*.html ./
 
 #4. Looking at the FastQC report.
