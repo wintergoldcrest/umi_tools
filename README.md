@@ -38,7 +38,8 @@ cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB0
  #Result: extracted barcodes, reads are trimmed
 
 -----
-#2. Mapping trimmed reads:
+#2. Mapping trimmed reads to the reference genome:
+#- the mapped reads were transformed into bam format and sorted with samtools
 
 #to look into script: 
 cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6
