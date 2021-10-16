@@ -33,11 +33,11 @@ cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB0
 #done
 
 #command
-/RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/uni_tools.sh
+sh /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/uni_tools.sh
  
  #Result: extracted barcodes, reads are trimmed
 
------
+
 #2. Mapping trimmed reads to the reference genome:
 #- the mapped reads were transformed into bam format and sorted with samtools
 
@@ -65,10 +65,6 @@ cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB0
 #command: sh clean_linda.sh
 
 
-#3. Download the cleaned files: scp  linda@bast-work-1.zoologie.uni-koeln.de:/home/linda/Scratch/trimmap/clean_data/*.html ./
-#and looking in the FastQC report.
-
-
 #4. SNP calling with GATK4:
 #genotype each line seperately with HaplotypeCaller
 
@@ -85,16 +81,16 @@ cat/RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03
 #/NVME/Software/popgen/gatk-4.1.9.0/gatk CreateSequenceDictionary -R Ppr.FINAL.fa -O Ppr.FINAL.dict
 ###call gvcf
 #$gatk HaplotypeCaller \
-       # -R $ref \
-       # --emit-ref-confidence GVCF \
-       #-I $bam \
-       # -O $out1
+#        -R $ref \
+#        --emit-ref-confidence GVCF \
+#        -I $bam \
+#        -O $out1
 
 ###detect SNPs
 #$gatk GenotypeGVCFs \
-       # -R $ref \
-       # -V $out1 \
-       # -O $out2
+#        -R $ref \
+#        -V $out1 \
+#        -O $out2
 
 ###compress
 #bgzip -f $out2
@@ -109,7 +105,6 @@ cat/RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03
 #FS (strand bias in support for REF versus ALT allele calls) >60
 #SOR (sequencing bias in which one DNA strand is favored over the other) >5
 #ReadPosRankSumTest < -8
-
 #also Indel:
 #QD <2
 #FS >100
@@ -117,50 +112,132 @@ cat/RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03
 #ReadPosRankSumTest < -8
 
 #to look into script:
-cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/clean_data/snp/filter.sh
-#vcf=$1
-#snpvcf=$2
-#indelvcf=$3
-#filterSNP=$4
-#filterINDEL=$5
-#finalvcf=$6
-###SelectVariants SNP
-#$gatk SelectVariants \
-       # -select-type SNP \
-       # -V $vcf \
-       # -O $snpvcf
-###SelectVariants INDEL
-#$gatk SelectVariants \
-       # -select-type INDEL \
-       # -V $vcf \
-       # -O $indelvcf
-###filter SNP
-#$gatk VariantFiltration \
-       # -V $snpvcf \
-       # --filter-expression "QD <2.0 || MQ <30.0 || FS >60.0 || SOR >5.0 || ReadPosRankSum < -8.0" \
-       # --filter-name "PASS" \
-       # -O $filterSNP
+cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/clean_data/snp/merged_gvcf.sh
+#/NVME/Software/popgen/gatk-4.1.9.0/gatk GenotypeGVCFs \
+ #       -R /home/shangao/Data/juicer/Ppr/test/review/blobtools/genome/Ppr.FINAL.fa \
+ #       -V merged_gvcf/merge.g.vcf.gz \
+ #      -O merged_gvcf/merge.vcf.gz
+
+#/NVME/Software/popgen/gatk-4.1.9.0/gatk SelectVariants \
+#        -select-type SNP \
+#        -V merged_gvcf/merge.vcf.gz \
+#        -O merged_gvcf/merge.snp.vcf.gz
+
+#/NVME/Software/popgen/gatk-4.1.9.0/gatk SelectVariants \
+#        -select-type INDEL \
+#        -V merged_gvcf/merge.vcf.gz \
+#        -O merged_gvcf/merge.indel.vcf.gz
+
+#/NVME/Software/popgen/gatk-4.1.9.0/gatk VariantFiltration \
+#        -V merged_gvcf/merge.snp.vcf.gz \
+#        --filter-expression "QD <2.0 || MQ <30.0 || FS >60.0 || SOR >5.0 || ReadPosRankSum < -8.0" \
+#        --filter-name "PASS" \
+#        -O merged_gvcf/merge.snp.f.vcf.gz
 ###filter INDEL
-#$gatk VariantFiltration \
-       # -V $indelvcf \
-       # --filter-expression "QD <2.0 || FS >100.0 || SOR >5.0 || ReadPosRankSum < -8.0" \
-       # --filter-name "PASS" \
-       # -O $filterINDEL
+#/NVME/Software/popgen/gatk-4.1.9.0/gatk VariantFiltration \
+#       -V merged_gvcf/merge.indel.vcf.gz \
+#        --filter-expression "QD <2.0 || FS >100.0 || SOR >5.0 || ReadPosRankSum < -8.0" \
+#        --filter-name "PASS" \
+#        -O merged_gvcf/merge.indel.f.vcf.gz
 ###merge SNP INDEL
-#$gatk MergeVcfs \
-       # -I $filterSNP \
-       # -I $filterINDEL \
-       # -O $finalvcf
-###delete temp
-#rm -f $snpvcf $indelvcf $filterSNP $filterINDEL
+#/NVME/Software/popgen/gatk-4.1.9.0/gatk MergeVcfs \
+#        -I merged_gvcf/merge.snp.f.vcf.gz \
+#        -I merged_gvcf/merge.indel.f.vcf.gz \
+#        -O merged_gvcf/merge.f.vcf.gz
 
-#command: sh filter.sh
-#output: VCF file
+#command: sh merged_gvcf.sh
+#output: VCF files
 
-#6. VCFtools for mutation rates: comparing mothers and daughters to get the mutation rate
-#to look into script:
+-----
 cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/clean_data/snp/merged_gvcf/filter.BIALLELIC.sh 
 #/NVME/Software/popgen/gatk-4.1.9.0/gatk SelectVariants  -V merge.snp.f.vcf.gz --restrict-alleles-to BIALLELIC -O merge.snp.f.bi.vcf.gz
 
 #command: sh filter.BIALLELIC.sh
+-----
 
+#6. VCFtools for mutation rates: comparing mothers and daughters to get the mutation rate
+#to look into script:
+cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/clean_data/snp/merged_gvcf/paired/extract_SNP.sh
+#vcftools --gzvcf ../merge.snp.f.bi.vcf.gz \
+#        --recode-INFO-all \
+#        --maxDP 30 \
+#        --minDP 10 \
+#        --minQ 30 \
+#        --recode \
+#        --stdout \
+#        --maf 0.05 \
+#        --min-meanDP 20 \
+#        --max-missing 0.95 \
+#        --indv A006200178_153625_S5 \
+#        --indv A006200178_153626_S6 \
+#        --out s56.vcf > s56.vcf
+
+#grep -v '|' s56.vcf > s56.removedshuxian.vcf
+
+#bedtools intersect -a s56.removedshuxian.vcf -b /home/shangao/Data/EDTA/Ppr/Ppr/Ppr.FINAL.fa.mod.EDTA.TEanno.gff3 -v > s56.removedshuxian.afterbed.vcf
+
+#python /home/shangao/script/python/vcf_filter-same.py -s s56.removedshuxian.afterbed.vcf -o s56.removedshuxian.afterbed.removesame.vcf
+
+#python /home/shangao/script/python/vcf_filter-same.1.py -s s56.removedshuxian.afterbed.removesame.vcf -o s56.removedshuxian.afterbed.removesame.filterread.vcf
+
+#command: sh extract_SNP.sh
+#result: final VCF files
+
+#7. Principal Component analysis (pca) to compare the samples to each other
+#to look into the script: 
+cat  /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/clean_data/snp/merged_gvcf/paired/pca/test.sh 
+#vcftools --gzvcf ../../merge.snp.f.bi.vcf.gz --plink --out merge.snp.f.bi.remove.repeat.vcf
+#/home/shangao/Software/plink --noweb --file merge.snp.f.bi.remove.repeat.vcf --make-bed --out merge.snp.f.bi.remove.repeat.vcf_bfile
+#/home/shangao/Software/plink --threads 16 --bfile merge.snp.f.bi.remove.repeat.vcf_bfile --pca 3 --out merge.snp.f.bi.remove.repeat.vcf_pca3_bfile
+#library(ggplot2)
+#library(ggrepel)
+#data<-read.table("merge.snp.f.bi.remove.repeat.vcf_pca3_bfile.eigenvec",header=T)
+#> pdf('pca12.pdf')
+#> ggplot(data,aes(x=pc1,y=pc2, colour = col,shape=col))+ geom_point()+ geom_text_repel(aes(x=pc1,y=pc2,label=name))+scale_x_continuous(limits=c(-1, 1))
+#> dev.off()
+#pdf
+#  2
+#> pdf('pca13.pdf')
+#> ggplot(data,aes(x=pc1,y=pc3, colour = col,shape=col))+ geom_point()+ geom_text_repel(aes(x=pc1,y=pc3,label=name))+scale_x_continuous(limits=c(-1, 1))
+#> dev.off()
+#pdf
+#  2
+#> pdf('pca23.pdf')
+#> ggplot(data,aes(x=pc2,y=pc3, colour = col,shape=col))+ geom_point()+ geom_text_repel(aes(x=pc2,y=pc3,label=name))+scale_x_continuous(limits=c(-1, 1))
+#> dev.off()
+
+#command: sh test.sh
+#result: pca image
+
+
+#8. Sliding window approach to visualize the number of mutations across the genome. 
+#to look into script:
+cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/clean_data/snp/merged_gvcf/paired/plot_dot/test.sh 
+#grep 'chr1' ../s12.removedshuxian.afterbed.removesame.filterread.vcf|awk '{print$1,$2}' > s12.chr1.plot
+#sed -i 's/chr1/1.5/g' s12.chr1.plot
+
+#grep 'chr1' ../s34.removedshuxian.afterbed.removesame.filterread.vcf|awk '{print$1,$2}' > s34.chr1.plot
+#sed -i 's/chr1/1/g' s34.chr1.plot
+
+#grep 'chr1' ../s56.removedshuxian.afterbed.removesame.filterread.vcf|awk '{print$1,$2}' > s56.chr1.plot
+#sed -i 's/chr1/0.5/g' s56.chr1.plot
+
+#cat title s12.chr1.plot s34.chr1.plot s56.chr1.plot > chr1.plot
+#library(ggplot2)
+#data<-read.table("s12.plot",header=T)
+#pdf('chr1.pdf',width=20,height=3)
+#> ggplot(data,aes(x=pos,y=col, colour = col))+ geom_point()+ scale_y_continuous(limits=c(0, 2))+ scale_x_continuous(limits=c(1, 31773567))+theme(panel.background = element_blank(),panel.border = element_blank(),legend.position="none",axis.text.y=element_blank(),axis.ticks.y=element_blank(),axis.title.y=element_blank(),plot.title = element_text(hjust = 0.5))+ggtitle("Chr1")+ylab("Position")
+#> dev.off()
+
+#command: sh test.sh
+
+#to make the image:
+#to look into the script:
+cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/clean_data/snp/merged_gvcf/paired/plot_dot/test1.sh
+#python /home/shangao/script/python/calulate_SNp_num.py -s ../s56.removedshuxian.afterbed.removesame.filterread.vcf -o s56.slide
+
+#pdf('All.pdf',width=20)
+#> ggplot(data,aes(x=pos,y=num, colour = chr,shape=as.factor(shape)))+ geom_point(size=3)+ scale_y_continuous(limits=c(0, 20),expand=c(0,0))+scale_x_continuous(expand=c(0,0))+theme(panel.background = element_blank(),panel.border = element_blank(),plot.title = element_text(hjust = 0.5),axis.line.x = element_line(color = "black"),axis.line.y = element_line(color = "black"))+ggtitle("Number of mutation")
+#dev.off()
+
+#command: sh test1.sh
