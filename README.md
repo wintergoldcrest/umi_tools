@@ -116,7 +116,7 @@ cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB0
 #/NVME/Software/popgen/gatk-4.1.9.0/gatk GenotypeGVCFs \
  #       -R /home/shangao/Data/juicer/Ppr/test/review/blobtools/genome/Ppr.FINAL.fa \
  #       -V merged_gvcf/merge.g.vcf.gz \
- #      -O merged_gvcf/merge.vcf.gz
+ #       -O merged_gvcf/merge.vcf.gz
 
 #/NVME/Software/popgen/gatk-4.1.9.0/gatk SelectVariants \
 #        -select-type SNP \
