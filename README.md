@@ -65,7 +65,7 @@ cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB0
 #command: sh clean_linda.sh
 
 
-#4. SNP calling with GATK4:
+#3. SNP calling with GATK4:
 #genotype each line seperately with HaplotypeCaller
 
 #to look into script:
@@ -99,7 +99,7 @@ cat/RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03
 #command: sh /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/clean_data/snp/gatk.sh
 
 
-#5. Setting hard filters with parameters as follows:
+#4. Setting hard filters with parameters as follows:
 #QD (variant confidence standardized by depth) <2
 #MQ (mapping quality of a SNP) <30
 #FS (strand bias in support for REF versus ALT allele calls) >60
@@ -146,14 +146,15 @@ cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB0
 #        -O merged_gvcf/merge.f.vcf.gz
 
 #command: sh merged_gvcf.sh
-#output: VCF files
 
------
+
+#5. Selecting of the variants
+#to look into script:
 cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/clean_data/snp/merged_gvcf/filter.BIALLELIC.sh 
 #/NVME/Software/popgen/gatk-4.1.9.0/gatk SelectVariants  -V merge.snp.f.vcf.gz --restrict-alleles-to BIALLELIC -O merge.snp.f.bi.vcf.gz
 
 #command: sh filter.BIALLELIC.sh
------
+
 
 #6. VCFtools for mutation rates: comparing mothers and daughters to get the mutation rate
 #to look into script:
@@ -182,6 +183,7 @@ cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB0
 
 #command: sh extract_SNP.sh
 #result: final VCF files
+
 
 #7. Principal Component analysis (pca) to compare the samples to each other
 #to look into the script: 
