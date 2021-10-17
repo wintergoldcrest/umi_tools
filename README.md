@@ -210,28 +210,7 @@ cat  /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB
 #result: pca image
 
 
-#8. Sliding window approach to visualize the number of mutations across the genome. 
-#to look into script:
-cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/clean_data/snp/merged_gvcf/paired/plot_dot/test.sh 
-#grep 'chr1' ../s12.removedshuxian.afterbed.removesame.filterread.vcf|awk '{print$1,$2}' > s12.chr1.plot
-#sed -i 's/chr1/1.5/g' s12.chr1.plot
-
-#grep 'chr1' ../s34.removedshuxian.afterbed.removesame.filterread.vcf|awk '{print$1,$2}' > s34.chr1.plot
-#sed -i 's/chr1/1/g' s34.chr1.plot
-
-#grep 'chr1' ../s56.removedshuxian.afterbed.removesame.filterread.vcf|awk '{print$1,$2}' > s56.chr1.plot
-#sed -i 's/chr1/0.5/g' s56.chr1.plot
-
-#cat title s12.chr1.plot s34.chr1.plot s56.chr1.plot > chr1.plot
-#library(ggplot2)
-#data<-read.table("s12.plot",header=T)
-#pdf('chr1.pdf',width=20,height=3)
-#> ggplot(data,aes(x=pos,y=col, colour = col))+ geom_point()+ scale_y_continuous(limits=c(0, 2))+ scale_x_continuous(limits=c(1, 31773567))+theme(panel.background = element_blank(),panel.border = element_blank(),legend.position="none",axis.text.y=element_blank(),axis.ticks.y=element_blank(),axis.title.y=element_blank(),plot.title = element_text(hjust = 0.5))+ggtitle("Chr1")+ylab("Position")
-#> dev.off()
-
-#command: sh test.sh
-
-#to make the image:
+#8. Landscape of mutation to visualize the number of mutations across the genome. 
 #to look into the script:
 cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/clean_data/snp/merged_gvcf/paired/plot_dot/test1.sh
 #python /home/shangao/script/python/calulate_SNp_num.py -s ../s56.removedshuxian.afterbed.removesame.filterread.vcf -o s56.slide
