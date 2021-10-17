@@ -66,7 +66,7 @@ cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB0
 
 
 #3. SNP calling with GATK4:
-#genotype each line seperately with HaplotypeCaller
+#genotype each line separately with HaplotypeCaller
 
 #to look into script:
 cat/RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/clean_data/snp/gatk.sh 
