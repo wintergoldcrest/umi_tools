@@ -8,17 +8,6 @@
 #Raw data processing:
 #1. Trim Illumina adapters and UMI adapters from raw reads
 
-#pwd
-/home/linda/Scratch
-
-#new file in Scratch: mkdir trimmap
-#pwd
-/home/linda/Scratch/trimmap
-
-#cp reads in my directory for S1-S6
-cp /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/A006200178_153621_S1_L* ./
-
-
 #to look into script:
 cat /RAID/Data/mites/reads/linda_umi/bastet.ccg.uni-koeln.de/downloads/jbast_JB03_September6/uni_tools.sh
 #for i in A006200178_153621_S1 \
